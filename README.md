@@ -4,8 +4,11 @@ Find out how to create a REST API token from scratch so that you can use it to a
 You'll need the following:
 
 1. An Azure subscription ID [find it here](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBlade) or [follow this guide](https://docs.microsoft.com/en-us/azure/azure-portal/get-subscription-tenant-id)
-1. A Service Principal with the following details the AppID, password, and tenant information. Create one with: `az ad sp create-for-rbac -n "REST API Service Principal"`
- 
+1. A Service Principal with the following details the AppID, password, and tenant information. Create one with: `az ad sp create-for-rbac -n "REST API Service Principal"` and assign the IAM role for the subscription. Alternatively set the proper role access:
+
+```
+az ad sp create-for-rbac --name "CICD" --role contributor --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID_DEMOS --sdk-auth
+``` 
 
 ## Setting Up
 You'll send a `POST` request to a Microsoft API that requires information related to the Service Principal. The request must be in a url encoded form with the required information.
