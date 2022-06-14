@@ -34,7 +34,7 @@ jobs:
           ## Send the request
           json_response=`curl -s -X POST $URL -H "Content-Type: application/x-www-form-urlencoded" -d "$tenandId&$client_id&$client_secret&$resource&$grant_type"`
           
-          AZURE_TOKEN=`$json_response | jq -r .access_token`
+          AZURE_TOKEN=`echo $json_response | jq -r .access_token`
           # mask token in Action logs
           echo "::add-mask::$AZURE_TOKEN"
           echo "AZURE_TOKEN=$AZURE_TOKEN" >> $GITHUB_ENV
