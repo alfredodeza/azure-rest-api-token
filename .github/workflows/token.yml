@@ -20,14 +20,13 @@ jobs:
     steps:
 
       - name: Generate Token
-        run: |
-          set -x
-          URL="https://login.microsoftonline.com/$AZURE_SERVICE_PRINCIPAL_TENANT/oauth2/token"
+        run: |        
+          URL="https://login.microsoftonline.com/${{ secrets.AZURE_SERVICE_PRINCIPAL_TENANT }}/oauth2/token"
 
           ## Params
-          tenantId="tenantId=$AZURE_SERVICE_PRINCIPAL_TENANT"
-          client_id="client_id=$AZURE_SERVICE_PRINCIPAL_APPID"
-          client_secret="client_secret=$AZURE_SERVICE_PRINCIPAL_PASSWORD"
+          tenantId="tenantId=${{ secrets.AZURE_SERVICE_PRINCIPAL_TENANT }}"
+          client_id="client_id=${{ secrets.AZURE_SERVICE_PRINCIPAL_APPID }}"
+          client_secret="client_secret=${{ secrets.AZURE_SERVICE_PRINCIPAL_PASSWORD }}"
           resource="resource=https://management.azure.com"
           grant_type="grant_type=client_credentials"
 
@@ -35,6 +34,8 @@ jobs:
           json_response=`curl -s -X POST $URL -H "Content-Type: application/x-www-form-urlencoded" -d "$tenandId&$client_id&$client_secret&$resource&$grant_type"`
           
           AZURE_TOKEN=`json_response | jq -r .access_token`
+          # mask token in Action logs
+          echo "::add-mask::$AZURE_TOKEN"
           echo "AZURE_TOKEN=$AZURE_TOKEN" >> $GITHUB_ENV
 
         # Should produce the name of the subscription if valid
