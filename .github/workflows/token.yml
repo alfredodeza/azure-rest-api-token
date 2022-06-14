@@ -31,9 +31,7 @@ jobs:
           grant_type="grant_type=client_credentials"
 
           ## Send the request
-          json_response=`curl -s -X POST $URL \
-             -H "Content-Type: application/x-www-form-urlencoded" \
-             -d "$tenandId&$client_id&$client_secret&$resource&$grant_type"`
+          json_response=`curl -s -X POST $URL -H "Content-Type: application/x-www-form-urlencoded" -d "$tenandId&$client_id&$client_secret&$resource&$grant_type"`
           AZURE_TOKEN=`json_response | jq -r .access_token
           echo "AZURE_TOKEN=$AZURE_TOKEN" >> $GITHUB_ENV
 
