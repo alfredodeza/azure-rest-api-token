@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Create TOKEN
+
+
+# Controls when the workflow will run
+on:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      - name: Generate Token
+        run: |
+          URL="https://login.microsoftonline.com/$AZURE_SERVICE_PRINCIPAL_TENANT/oauth2/token"
+
+          ## Params
+          tenantId="tenantId=$AZURE_SERVICE_PRINCIPAL_TENANT"
+          client_id="client_id=$AZURE_SERVICE_PRINCIPAL_APPID"
+          client_secret="client_secret=$AZURE_SERVICE_PRINCIPAL_PASSWORD"
+          resource="resource=https://management.azure.com"
+          grant_type="grant_type=client_credentials"
+
+          ## Send the request
+          json_response=`curl -s -X POST $URL \
+             -H "Content-Type: application/x-www-form-urlencoded" \
+             -d "$tenandId&$client_id&$client_secret&$resource&$grant_type"`
+          AZURE_TOKEN=`json_response | jq -r .access_token
+          echo "AZURE_TOKEN=$AZURE_TOKEN" >> $GITHUB_ENV
+
+        # Should produce the name of the subscription if valid
+      - name: Verify token was generated
+        run: |
+          curl --silent -H "Authorizatiton: Bearer $AZURE_TOKEN" -X GET "https://management.azure.com/subscriptions/?api-version=2017-05-10" | jq .value[0].displayName
