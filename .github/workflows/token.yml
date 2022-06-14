@@ -21,6 +21,7 @@ jobs:
 
       - name: Generate Token
         run: |        
+          set -x
           URL="https://login.microsoftonline.com/${{ secrets.AZURE_SERVICE_PRINCIPAL_TENANT }}/oauth2/token"
 
           ## Params
