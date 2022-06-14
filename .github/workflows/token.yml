@@ -21,6 +21,7 @@ jobs:
 
       - name: Generate Token
         run: |
+          set -x
           URL="https://login.microsoftonline.com/$AZURE_SERVICE_PRINCIPAL_TENANT/oauth2/token"
 
           ## Params
@@ -32,6 +33,7 @@ jobs:
 
           ## Send the request
           json_response=`curl -s -X POST $URL -H "Content-Type: application/x-www-form-urlencoded" -d "$tenandId&$client_id&$client_secret&$resource&$grant_type"`
+          
           AZURE_TOKEN=`json_response | jq -r .access_token`
           echo "AZURE_TOKEN=$AZURE_TOKEN" >> $GITHUB_ENV
 
