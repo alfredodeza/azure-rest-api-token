@@ -1,5 +1,13 @@
 # Generate an Azure REST API Token
-Find out how to create a REST API token from scratch so that you can use it to authenticate requests to Azure's REST API.
+Find out how to create a REST API token from scratch so that you can use it to authenticate requests 
+to Azure's REST API.
+
+## Why?
+If you need to interact with Azure's REST API directly, you will need a token. This token is used as part of the headers as the authorization value. 
+
+In [some cases](https://github.com/Azure/azure-cli/issues/17102), the Azure CLI will not support certain APIs, but you can still access them via direct HTTP requests. 
+
+## Requirements
 
 You'll need the following:
 
