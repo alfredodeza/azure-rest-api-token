@@ -42,4 +42,5 @@ jobs:
         # Should produce the name of the subscription if valid
       - name: Verify token was generated
         run: |
-          curl --silent -H "Authorizatiton: Bearer ${{ env.AZURE_TOKEN }}" -X GET "https://management.azure.com/subscriptions/?api-version=2017-05-10" | jq .value[0].displayName
+          curl --silent -H "Authorizatiton: Bearer ${{ env.AZURE_TOKEN }}" -X GET "https://management.azure.com/subscriptions/?api-version=2017-05-10"
+          #curl --silent -H "Authorizatiton: Bearer ${{ env.AZURE_TOKEN }}" -X GET "https://management.azure.com/subscriptions/?api-version=2017-05-10" | jq .value[0].displayName
